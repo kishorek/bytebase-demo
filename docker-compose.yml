@@ -1,0 +1,27 @@
+services:
+  bytebase:
+    image: bytebase/bytebase:1.11.0
+    init: true
+    container_name: bytebase
+    restart: always
+    ports:
+      - 5678:5678
+    volumes:
+      - ./data:/var/opt/bytebase
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: ["--data", "/var/opt/bytebase", "--port", "5678"]
+
+  config-db-dev:
+    build:
+      context: ./devconfigdb
+      dockerfile: Dockerfile
+    ports:
+      - 3307:3306
+      
+  config-db-prd:
+    build:
+      context: ./devconfigdb
+      dockerfile: Dockerfile
+    ports:
+      - 3308:3306
